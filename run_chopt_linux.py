@@ -17,6 +17,10 @@ try:
     # Execute command and capture output
     result = subprocess.run(command, capture_output=True, text=True)
 
+    # Print stdout and stderr for debugging
+    print("CHOpt_linux stdout:", result.stdout)
+    print("CHOpt_linux stderr:", result.stderr)
+
     # Save terminal output to .txt file
     with open(output_txt, "w") as f:
         f.write(result.stdout)
