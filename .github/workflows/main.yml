@@ -18,14 +18,9 @@ jobs:
         with:
           python-version: '3.x'  # Specify the Python version you want to use
 
-      - name: Install dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y chmod
-
       - name: Make CHOpt executable
         run: |
-          chmod +x ./CHOpt
+          chmod +x ./CHOpt  # Ensure CHOpt is executable
           chmod +x ./libpng16.16.dylib 
 
       - name: Run CHOpt
@@ -38,4 +33,4 @@ jobs:
           add: 'output.txt'
           message: 'Add output.txt from CHOpt run'
           author_name: 'GitHub Actions'
-          author_email: 'actions@github.com'
+          author_email: 'actions@github.com'          
