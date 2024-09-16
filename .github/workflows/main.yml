@@ -29,10 +29,13 @@ jobs:
     - name: List files for debugging
       run: ls -la test
 
-    - name: Commit and push .txt file
+    - name: Commit and push .txt file (ignore CHOpt_linux changes)
       run: |
         git config --global user.name "github-actions[bot]"
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git restore --staged CHOpt_linux # Ensure we don't stage changes to the executable
         git add test/output.txt
         git commit -m "Add CHOpt_linux output.txt"
         git push
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
