@@ -10,20 +10,22 @@ chopt_executable = "./CHOpt_linux"
 if not os.path.exists("test"):
     os.makedirs("test")
 
-# Run the CHOpt_linux application with the '-f notes.mid' argument only
-command = [chopt_executable, "-f", notes_file]
+# Run the CHOpt_linux application with both -f and -o arguments
+command = [chopt_executable, "-f", notes_file, "-o", "output.png"]
 
 try:
-    # Execute command and capture output
+    # Execute the command and capture stdout and stderr
     result = subprocess.run(command, capture_output=True, text=True)
 
-    # Print stdout and stderr for debugging
-    print("CHOpt_linux stdout:", result.stdout)
-    print("CHOpt_linux stderr:", result.stderr)
+    # Combine stdout and stderr for debugging purposes
+    combined_output = f"STDOUT:\n{result.stdout}\n\nSTDERR:\n{result.stderr}"
 
-    # Save terminal output to .txt file
+    # Print stdout and stderr to the console for logging
+    print(combined_output)
+
+    # Write both stdout and stderr to output.txt
     with open(output_txt, "w") as f:
-        f.write(result.stdout)
+        f.write(combined_output)
 
 except Exception as e:
     print(f"Error running CHOpt_linux: {e}")
