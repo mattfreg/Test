@@ -1,0 +1,6 @@
+STDOUT:
+
+
+STDERR:
+./CHOpt_linux: /lib/x86_64-linux-gnu/libstdc++.so.6: version `GLIBCXX_3.4.32' not found (required by ./CHOpt_linux)
+./CHOpt_linux: /lib/x86_64-linux-gnu/libstdc++.so.6: version `GLIBCXX_3.4.31' not found (required by ./CHOpt_linux)
