@@ -14,6 +14,13 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
+    - name: Install GCC and libstdc++
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y gcc-11 g++-11
+        sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 60
+        sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-11 60
+
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
@@ -29,11 +36,10 @@ jobs:
     - name: List files for debugging
       run: ls -la test
 
-    - name: Commit and push .txt file (ignore CHOpt_linux changes)
+    - name: Commit and push .txt file
       run: |
         git config --global user.name "github-actions[bot]"
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
-        git restore --staged CHOpt_linux # Ensure we don't stage changes to the executable
         git add test/output.txt
         git commit -m "Add CHOpt_linux output.txt"
         git push
