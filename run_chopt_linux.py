@@ -12,8 +12,8 @@ chopt_executable = "./CHOpt_linux"
 if not os.path.exists("test"):
     os.makedirs("test")
 
-# Run the CHOpt_linux application
-command = [chopt_executable, "-f", notes_file]
+# Run the CHOpt_linux application with the '-f notes.mid' and '-o output.png' arguments
+command = [chopt_executable, "-f", notes_file, "-o", output_png]
 
 try:
     # Execute command and capture output
@@ -23,7 +23,7 @@ try:
     with open(output_txt, "w") as f:
         f.write(result.stdout)
 
-    # Move the generated .png file (assumed to be output.png)
+    # Move the generated .png file (output.png)
     if os.path.exists(output_png):
         shutil.move(output_png, "test/output.png")
 
