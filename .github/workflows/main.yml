@@ -1,59 +1,41 @@
-name: Run CHOpt_linux
+name: Run CHOpt and Commit Output
 
 on:
   push:
     branches:
-      - main
-  workflow_dispatch:
+      - main  # Change to your target branch if needed
 
 jobs:
   run-chopt:
     runs-on: ubuntu-latest
-
+    
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-    - name: Install dependencies
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y wget
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'  # Specify the Python version you want to use
 
-    - name: Download and Install GCC 11 (includes updated libstdc++)
-      run: |
-        wget https://ftp.gnu.org/gnu/gcc/gcc-11.3.0/gcc-11.3.0.tar.gz
-        tar -xzf gcc-11.3.0.tar.gz
-        cd gcc-11.3.0
-        ./contrib/download_prerequisites
-        mkdir build
-        cd build
-        ../configure --enable-languages=c,c++ --disable-multilib
-        make -j$(nproc)
-        sudo make install
-        cd ../..
-        sudo rm -rf gcc-11.3.0 gcc-11.3.0.tar.gz
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y chmod
 
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.x'
+      - name: Make CHOpt executable
+        run: |
+          chmod +x ./CHOpt
+          chmod +x ./libpng16.16.dylib 
 
-    - name: Make CHOpt_linux executable
-      run: chmod +x ./CHOpt_linux
+      - name: Run CHOpt
+        run: |
+          ./CHOpt -f notes.mid > output.txt 2>&1
 
-    - name: Run Python script to execute CHOpt_linux
-      run: |
-        python3 run_chopt_linux.py
-
-    - name: List files for debugging
-      run: ls -la test
-
-    - name: Commit and push .txt file
-      run: |
-        git config --global user.name "github-actions[bot]"
-        git config --global user.email "github-actions[bot]@users.noreply.github.com"
-        git add test/output.txt
-        git commit -m "Add CHOpt_linux output.txt"
-        git push
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Commit output.txt
+        uses: EndBug/add-and-commit@v9
+        with:
+          add: 'output.txt'
+          message: 'Add output.txt from CHOpt run'
+          author_name: 'GitHub Actions'
+          author_email: 'actions@github.com'
